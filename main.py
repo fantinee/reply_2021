@@ -1,5 +1,5 @@
 import numpy as np
-
+import threading
 from solver import Solver
 
 class Building:
@@ -66,4 +66,21 @@ def main():
   print('Solution generated')
   print('END')
 
+  # multiple solutions using threads
+  n_threads = 3
+  scores_sol_threads = []  # [(score1, grid1), (score2, grid2), ...]
+  threads = []
+  for i in range(n_threads):
+    th = threading.Thread(target = solver.gen_random_solution)
+    threads.append(th)
+    threads[i].start()
+  for t in threads:
+    t.join()
+  # select max from scores_sol_threads[1,:]
+  sub_l = list(zip(*scores_sol_threads))[0]
+  # get position with max index
+  max_index = sub_l.index(max(list(zip(*scores_sol_threads))[0]))
+  print (scores_sol_threads[max_index])
+
+  # return grid from position with max score
 main()
