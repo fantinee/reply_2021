@@ -64,11 +64,8 @@ def main():
   print('Data loaded.')
   solver = Solver(grid)
   print('Generating solution...')
-  grid = solver.gen_random_solution()
+  score, grid = solver.gen_random_solution()
   print('Solution generated')
-  print('Evaluating solution...')
-  evaluation = solver.evaluate_solution(grid)
-  print('Evaluation:', evaluation)
   print('END')
 
   # multiple solutions using threads

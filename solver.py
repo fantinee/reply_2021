@@ -13,6 +13,7 @@ class Solver:
         return True
       else:
         False
+
     import numpy as np
 
     antennas = copy(self.antennas)
@@ -28,7 +29,10 @@ class Solver:
           print('Assigning ant {} to pos {}'.format(ant._id, (i, j)))
           break
     
-    return grid
+    score = self.evaluate_solution(grid)
+    print('Solution score', score)
+
+    return score, grid
 
   def evaluate_solution(self, grid):
     def _get_cell_coverage(grid, ant):
