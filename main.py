@@ -4,7 +4,7 @@ from solver import Solver
 
 class Building:
   def __init__(self, id, x, y, latency, speed):
-    #self._id = id
+    self._id = id
     self.x = x
     self.y = y
     self.latency = latency
@@ -25,7 +25,7 @@ class Grid:
     self.n = int((self.input_file[1]).split()[0]) # number of buildings
     self.m = int((self.input_file[1]).split()[1])
     self.r = int((self.input_file[1]).split()[2])
-    self.buildings = []
+    self.buildings = {}
     self.antennas = {}
     #self.buildings_hash = {}  # Position to object
     self._grid_populate()
@@ -38,8 +38,9 @@ class Grid:
   def _add_buildings(self):
     for i in range (self.n):
       b_line = [int(i) for i in self.input_file[i+2].split()]
-      b = Building(*b_line)
-      self.buildings.append(b)
+      b = Building(i, *b_line)
+      #self.buildings.append(b)
+      self.buildings[i] = b
 
   def _read_antennas(self):
     id_num = 0
