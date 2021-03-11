@@ -4,7 +4,7 @@ from solver import Solver
 
 class Building:
   def __init__(self, id, x, y, latency, speed):
-    #self._id = id
+    self._id = id
     self.x = x
     self.y = y
     self.latency = latency
@@ -13,6 +13,7 @@ class Building:
 class Antenna:
   def __init__(self, id, Range, Speed):
     self._id = id
+    self.pos = (None, None)
     self.Range = Range
     self.Speed = Speed
 
@@ -25,7 +26,7 @@ class Grid:
     self.n = int((self.input_file[1]).split()[0]) # number of buildings
     self.m = int((self.input_file[1]).split()[1])
     self.r = int((self.input_file[1]).split()[2])
-    self.buildings = []
+    self.buildings = {}
     self.antennas = {}
     #self.buildings_hash = {}  # Position to object
     self._grid_populate()
@@ -36,10 +37,13 @@ class Grid:
     pass
 
   def _add_buildings(self):
+    id_num = 0
     for i in range (self.n):
       b_line = [int(i) for i in self.input_file[i+2].split()]
-      b = Building(*b_line)
-      self.buildings.append(b)
+      b = Building(id_num, *b_line)
+      self.buildings[id_num] = b
+      self.cells[b.x][b.y][0] = id_num
+      id_num+=1
 
   def _read_antennas(self):
     id_num = 0
@@ -52,17 +56,19 @@ def read_input(file):
     with open(file,"r") as f:
         return  (f.read().splitlines())
 
-
 def main():
   print ("REPLY CHALLENGE")
   # generate grid 
   print('Loading data...')
-  grid =  Grid("data_scenarios_f_tokyo.in")
+  grid =  Grid("data_scenarios_a_example.in")
   print('Data loaded.')
   solver = Solver(grid)
   print('Generating solution...')
   grid = solver.gen_random_solution()
   print('Solution generated')
+  print('Evaluating solution...')
+  evaluation = solver.evaluate_solution(grid)
+  print('Evaluation:', evaluation)
   print('END')
 
 main()
